@@ -1,0 +1,729 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AdminDashboard.master.cs" Inherits="LMS.MasterPages.AdminDashboard" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LMS Admin Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --header-height: 70px;
+            --primary-color: #4f46e5;
+            --primary-dark: #3730a3;
+            --sidebar-bg: #1e293b;
+            --sidebar-hover: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--sidebar-bg) 0%, #0f172a 100%);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+            height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .sidebar-menu::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-menu::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-menu::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .menu-item {
+            margin: 0.25rem 1rem;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1rem;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .menu-link:hover {
+            color: white;
+            background: var(--sidebar-hover);
+            transform: translateX(4px);
+        }
+
+        .menu-link i {
+            width: 20px;
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .menu-arrow {
+            margin-left: auto;
+            transition: transform 0.2s ease;
+        }
+
+        .menu-arrow.rotated {
+            transform: rotate(90deg);
+        }
+
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.2);
+            margin: 0.25rem 1rem;
+            border-radius: 8px;
+        }
+
+        .submenu.show {
+            max-height: 500px;
+        }
+
+        .submenu-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .submenu-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(4px);
+        }
+
+        /* Main Content */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .header {
+            background: white;
+            height: var(--header-height);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hamburger-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .hamburger-btn:hover {
+            background: #f1f5f9;
+            color: var(--primary-color);
+        }
+
+        .breadcrumb {
+            background: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .breadcrumb-item {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .breadcrumb-item a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .breadcrumb-item a:hover {
+            color: var(--primary-color);
+        }
+
+        .header-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .admin-profile:hover {
+            background: #f1f5f9;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .profile-info h6 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .profile-info span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Content Area */
+        .content-wrapper {
+            padding: 2rem;
+            min-height: calc(100vh - var(--header-height));
+        }
+
+        .page-title {
+            color: #1e293b;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Stats Cards */
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .stats-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1050;
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-wrapper {
+                margin-left: 0;
+            }
+            
+            .header {
+                padding: 0 1rem;
+            }
+            
+            .content-wrapper {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .breadcrumb {
+                font-size: 0.8rem;
+            }
+            
+            .breadcrumb-item {
+                font-size: 0.8rem;
+            }
+            
+            .header-right {
+                gap: 0.5rem;
+            }
+            
+        }
+
+        @media (max-width: 576px) {
+            .breadcrumb {
+                display: none;
+            }
+            
+            .header {
+                padding: 0 0.5rem;
+            }
+            
+            .content-wrapper {
+                padding: 1rem 0.5rem;
+            }
+            
+            .profile-info {
+                display: none !important;
+            }
+        }
+
+        /* Custom Toastr Styles */
+        .toast-success {
+            background-color: var(--primary-color) !important;
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+        }
+
+        .profile-dropdown .dropdown-item {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .profile-dropdown .dropdown-item:hover {
+            background: #f8fafc;
+            color: var(--primary-color);
+        }
+
+        .profile-dropdown .dropdown-divider {
+            margin: 0.5rem 0;
+        }
+    </style>
+    
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form2" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        
+        <!-- Mobile Overlay -->
+        <div id="mobileOverlay" class="mobile-overlay"></div>
+        
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href='<%= ResolveUrl("~/AdminDefault.aspx") %>' class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>ITVerse</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-menu">
+                <!-- Dashboard -->
+                <div class="menu-item">
+                    <a href='<%= ResolveUrl("~/AdminDefault.aspx") %>' class="menu-link active">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                
+                <!-- User Management -->
+                <div class="menu-item">
+                    <a href="#" class="menu-link" onclick="toggleSubmenu('userSubmenu', this)">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                        <i class="fas fa-chevron-right menu-arrow"></i>
+                    </a>
+                    <div class="submenu" id="userSubmenu">
+                        <a href='<%= ResolveUrl("~/UserManagement/StudentManagement/StudentManagement.aspx") %>' class="submenu-link">
+                            <i class="fas fa-user-graduate"></i>
+                            Student Management
+                        </a>
+                        <a href='<%= ResolveUrl("~/UserManagement/TeacherManagement/TeacherManagement.aspx") %>' class="submenu-link">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            Teacher Management
+                        </a>
+                         
+                        <a href='<%= ResolveUrl("~/UserManagement/AdminManagement/AdminManagement.aspx") %>' class="submenu-link">
+                            <i class="fas fa-user-shield"></i>
+                            Admin Management
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Course Management -->
+                <div class="menu-item">
+                    <a href="#" class="menu-link" onclick="toggleSubmenu('courseSubmenu', this)">
+                        <i class="fas fa-book"></i>
+                        <span>Course Management</span>
+                        <i class="fas fa-chevron-right menu-arrow"></i>
+                    </a>
+                    <div class="submenu" id="courseSubmenu">
+                        <a href='<%= ResolveUrl("~/CourseManagement/CourseManagement.aspx") %>' class="submenu-link">
+                            <i class="fas fa-plus"></i>
+                            Manage Courses
+                        </a> 
+                        <a href='<%= ResolveUrl("~/CourseManagement/ViewCourse.aspx") %>' class="submenu-link">
+                            <i class="fas fa-list"></i>
+                            All Courses
+                        </a>
+                    </div>
+                </div>
+                 <div class="menu-item">
+                    <a href='<%= ResolveUrl("~/LogOut.aspx") %>' class="menu-link active">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content Wrapper -->
+        <div class="main-wrapper">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="hamburger-btn d-lg-none" onclick="toggleSidebar()" type="button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href='<%= ResolveUrl("~/AdminDefault.aspx") %>'>Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <asp:ContentPlaceHolder ID="BreadcrumbContent" runat="server">
+                                    Overview
+                                </asp:ContentPlaceHolder>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                
+                <div class="header-right">
+                    
+                    <div class="dropdown">
+                        <div class="admin-profile" data-bs-toggle="dropdown" aria-expanded="false">
+                            <asp:Image ID="imgProfile" runat="server" CssClass="profile-avatar" />
+                            <div class="profile-info d-none d-md-block">
+                                <h6>
+                                    <asp:Label ID="lblAdminName" runat="server" Text=""></asp:Label>
+                                </h6>
+                                <span>Super Admin</span>
+                            </div>
+                            <i class="fas fa-chevron-down ms-1"></i>
+                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end profile-dropdown">
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                            <asp:LinkButton ID="btnLogout" runat="server" CssClass="dropdown-item" PostBackUrl="~/LoginPage.aspx">
+                                <i class="fas fa-sign-out-alt me-2"></i><span>Logout</span>
+                            </asp:LinkButton>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Content Area -->
+            <main class="content-wrapper">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    <!-- Default Dashboard Content -->
+                </asp:ContentPlaceHolder>
+            </main>
+        </div>
+    </form>
+    
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize tooltips and toastr
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Configure Toastr
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            // Setup mobile overlay click handler
+            const overlay = document.getElementById('mobileOverlay');
+            if (overlay) {
+                overlay.addEventListener('click', closeSidebar);
+            }
+        });
+
+        // Toggle Sidebar for mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+
+            if (!sidebar || !overlay) return;
+
+            const isOpen = sidebar.classList.contains('show');
+
+            if (isOpen) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+
+        // Open sidebar
+        function openSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+
+            if (sidebar && overlay) {
+                sidebar.classList.add('show');
+                overlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Close sidebar
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+
+            if (sidebar) sidebar.classList.remove('show');
+            if (overlay) overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Toggle Submenu
+        function toggleSubmenu(submenuId, linkElement) {
+            if (event) event.preventDefault();
+
+            const submenu = document.getElementById(submenuId);
+            const arrow = linkElement.querySelector('.menu-arrow');
+
+            if (!submenu || !arrow) return;
+
+            // Close other submenus
+            document.querySelectorAll('.submenu').forEach(menu => {
+                if (menu.id !== submenuId && menu.classList.contains('show')) {
+                    menu.classList.remove('show');
+                    const otherArrow = menu.previousElementSibling?.querySelector('.menu-arrow');
+                    if (otherArrow) otherArrow.classList.remove('rotated');
+                }
+            });
+
+            // Toggle current submenu
+            submenu.classList.toggle('show');
+            arrow.classList.toggle('rotated');
+        }
+
+        // Set active menu item
+        function setActiveMenuItem(page) {
+            document.querySelectorAll('.menu-link, .submenu-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            const activeLink = document.querySelector(`[href="${page}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+
+                // If it's a submenu item, show parent submenu
+                if (activeLink.classList.contains('submenu-link')) {
+                    const submenu = activeLink.closest('.submenu');
+                    if (submenu) {
+                        submenu.classList.add('show');
+                        const parentLink = submenu.previousElementSibling;
+                        const arrow = parentLink?.querySelector('.menu-arrow');
+                        if (arrow) arrow.classList.add('rotated');
+                    }
+                }
+            }
+        }
+
+        // Toast notification functions
+        function showSuccessToast(message) {
+            toastr.success(message);
+        }
+
+        function showErrorToast(message) {
+            toastr.error(message);
+        }
+
+        function showWarningToast(message) {
+            toastr.warning(message);
+        }
+
+        function showInfoToast(message) {
+            toastr.info(message);
+        }
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = event.target.closest('[onclick="toggleSidebar()"]');
+            
+            if (!sidebar.contains(event.target) && !toggleBtn && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+            }
+        });
+    </script>
+    
+    <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>

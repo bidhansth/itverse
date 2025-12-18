@@ -1,0 +1,75 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\bb\\s4\\wapp\\submitted\\LMS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9E5E5E57-A401-42A8-AD8D-48F58E022E12}|LMS.csproj|d:\\bb\\s4\\wapp\\submitted\\lms\\masterpages\\public.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}",
+      "RelativeMoniker": "D:0:0:{9E5E5E57-A401-42A8-AD8D-48F58E022E12}|LMS.csproj|solutionrelative:masterpages\\public.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9E5E5E57-A401-42A8-AD8D-48F58E022E12}|LMS.csproj|d:\\bb\\s4\\wapp\\submitted\\lms\\masterpages\\public.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E5E5E57-A401-42A8-AD8D-48F58E022E12}|LMS.csproj|solutionrelative:masterpages\\public.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9E5E5E57-A401-42A8-AD8D-48F58E022E12}|LMS.csproj|d:\\bb\\s4\\wapp\\submitted\\lms\\pages\\public\\ask.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9E5E5E57-A401-42A8-AD8D-48F58E022E12}|LMS.csproj|solutionrelative:pages\\public\\ask.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Public.Master",
+              "DocumentMoniker": "D:\\bb\\s4\\wapp\\submitted\\LMS\\MasterPages\\Public.Master",
+              "RelativeDocumentMoniker": "MasterPages\\Public.Master",
+              "ToolTip": "D:\\bb\\s4\\wapp\\submitted\\LMS\\MasterPages\\Public.Master",
+              "RelativeToolTip": "MasterPages\\Public.Master",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2025-08-02T16:44:02.56Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Public.Master.cs",
+              "DocumentMoniker": "D:\\bb\\s4\\wapp\\submitted\\LMS\\MasterPages\\Public.Master.cs",
+              "RelativeDocumentMoniker": "MasterPages\\Public.Master.cs",
+              "ToolTip": "D:\\bb\\s4\\wapp\\submitted\\LMS\\MasterPages\\Public.Master.cs",
+              "RelativeToolTip": "MasterPages\\Public.Master.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T16:43:57.121Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Ask.aspx.cs",
+              "DocumentMoniker": "D:\\bb\\s4\\wapp\\submitted\\LMS\\Pages\\Public\\Ask.aspx.cs",
+              "RelativeDocumentMoniker": "Pages\\Public\\Ask.aspx.cs",
+              "ToolTip": "D:\\bb\\s4\\wapp\\submitted\\LMS\\Pages\\Public\\Ask.aspx.cs",
+              "RelativeToolTip": "Pages\\Public\\Ask.aspx.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAwBoAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-02T15:43:08.233Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
